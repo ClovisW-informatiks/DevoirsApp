@@ -3,18 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mes Devoirs - Switch Vibes</title>
+<title>Nootes - Connexion</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-  <h1>Mes Devoirs 🌈</h1>
-  <div class="input-group">
-    <input type="text" id="taskInput" placeholder="Ajouter un devoir">
-    <button onclick="addTask()">+</button>
+<div class="login-container">
+  <h1>Nootes</h1>
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Mot de passe">
+  <div class="btn-group">
+    <button onclick="login()">Se connecter</button>
+    <button onclick="signup()">S'inscrire</button>
   </div>
-  <ul id="taskList"></ul>
+  <p id="error" class="error"></p>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="script.js"></script>
 </body>
 </html>

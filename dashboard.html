@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nootes - Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="dashboard-container">
+  <header>
+    <h1>Mes Tâches</h1>
+    <button onclick="logout()">Déconnexion</button>
+  </header>
+
+  <div class="task-input">
+    <input type="text" id="taskTitle" placeholder="Titre de la tâche">
+    <input type="text" id="taskCategory" placeholder="Catégorie">
+    <button onclick="addTask()">Ajouter</button>
+  </div>
+
+  <div id="taskList" class="task-list"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="script.js"></script>
+</body>
+</html>
