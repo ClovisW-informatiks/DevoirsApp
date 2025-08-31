@@ -1,12 +1,14 @@
-// 🔹 Supabase setup
-const supabaseUrl = 'https://qvlmbyqbewerfbplpdau.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF2bG1ieXFiZXdlcmZicGxwZGF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY2NTY1MjUsImV4cCI6MjA3MjIzMjUyNX0.UlH5PkMaqwXHMneHXcOKBQSFw6R_h1hjKCnV_dI8UwA';
+// 🔹 Variable client Supabase (sera initialisée après DOMContentLoaded)
+let supabaseClient;
 
-// ⚠️ On change le nom du client pour éviter les conflits globaux
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-// 🔹 Déclarer les fonctions globales après DOM chargé
+// 🔹 Initialisation après que DOM et module soient prêts
 document.addEventListener("DOMContentLoaded", () => {
+    supabaseClient = supabase.createClient(
+        'https://qvlmbyqbewerfbplpdau.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF2bG1ieXFiZXdlcmZicGxwZGF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY2NTY1MjUsImV4cCI6MjA3MjIzMjUyNX0.UlH5PkMaqwXHMneHXcOKBQSFw6R_h1hjKCnV_dI8UwA'
+    );
+
+    // 🔹 Déclarer les fonctions globales pour HTML
     window.login = login;
     window.signup = signup;
     window.logout = logout;
@@ -14,40 +16,40 @@ document.addEventListener("DOMContentLoaded", () => {
     window.toggleDone = toggleDone;
     window.deleteTask = deleteTask;
 
-    // Auto load des tâches si on est sur dashboard
+    // 🔹 Auto load des tâches si on est sur dashboard
     if(window.location.pathname.includes("dashboard.html")) loadTasks();
 });
 
-// 🔹 Login
+// 🔹 LOGIN
 async function login() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    const { error } = await supabase.auth.signIn({ email, password });
+    const { error } = await supabaseClient.auth.signIn({ email, password });
     if(error) document.getElementById("error").innerText = error.message;
     else window.location = "dashboard.html";
 }
 
-// 🔹 Signup
+// 🔹 SIGNUP
 async function signup() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { error } = await supabaseClient.auth.signUp({ email, password });
     if(error) document.getElementById("error").innerText = error.message;
     else window.location = "dashboard.html";
 }
 
-// 🔹 Logout
+// 🔹 LOGOUT
 async function logout() {
-    await supabase.auth.signOut();
+    await supabaseClient.auth.signOut();
     window.location = "index.html";
 }
 
-// 🔹 Charger les tâches
+// 🔹 LOAD TASKS
 async function loadTasks() {
-    const user = supabase.auth.user();
+    const user = supabaseClient.auth.user();
     if(!user) { window.location="index.html"; return; }
 
-    const { data: tasks } = await supabase.from('tasks').select('*').eq('user_id', user.id);
+    const { data: tasks } = await supabaseClient.from('tasks').select('*').eq('user_id', user.id);
     const list = document.getElementById("taskList");
     list.innerHTML = "";
 
@@ -66,28 +68,29 @@ async function loadTasks() {
     });
 }
 
-// 🔹 Ajouter tâche
+// 🔹 ADD TASK
 async function addTask() {
     const title = document.getElementById("taskTitle").value;
     const category = document.getElementById("taskCategory").value;
-    const user = supabase.auth.user();
+    const user = supabaseClient.auth.user();
     if(!title) return;
-    await supabase.from('tasks').insert([{ title, category, user_id: user.id }]);
+
+    await supabaseClient.from('tasks').insert([{ title, category, user_id: user.id }]);
     document.getElementById("taskTitle").value = "";
     document.getElementById("taskCategory").value = "";
     loadTasks();
 }
 
-// 🔹 Toggle done
+// 🔹 TOGGLE DONE
 async function toggleDone(id, done) {
-    const user = supabase.auth.user();
-    await supabase.from('tasks').update({ done: !done }).eq('id', id).eq('user_id', user.id);
+    const user = supabaseClient.auth.user();
+    await supabaseClient.from('tasks').update({ done: !done }).eq('id', id).eq('user_id', user.id);
     loadTasks();
 }
 
-// 🔹 Supprimer tâche
+// 🔹 DELETE TASK
 async function deleteTask(id) {
-    const user = supabase.auth.user();
-    await supabase.from('tasks').delete().eq('id', id).eq('user_id', user.id);
+    const user = supabaseClient.auth.user();
+    await supabaseClient.from('tasks').delete().eq('id', id).eq('user_id', user.id);
     loadTasks();
 }
