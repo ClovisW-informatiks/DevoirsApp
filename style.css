@@ -1,0 +1,88 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to top, #6b5b95, #feb236, #d64161);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  margin: 0;
+  padding-top: 50px;
+}
+
+.container {
+  width: 350px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  animation: slideIn 1s ease-out;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  animation: rainbowText 3s infinite;
+}
+
+.input-group {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px 0 0 10px;
+  border: none;
+  outline: none;
+}
+
+button {
+  padding: 10px;
+  border-radius: 0 10px 10px 0;
+  border: none;
+  background: #6b5b95;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+button:hover {
+  background: #feb236;
+  color: #333;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #fff;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+li:hover {
+  transform: scale(1.03);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+li.done {
+  background: #a0e7e5;
+  text-decoration: line-through;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes rainbowText {
+  0%{color:#ff4b1f;}20%{color:#ff9068;}40%{color:#f6d365;}60%{color:#a8ff78;}80%{color:#78ffd6;}100%{color:#ff4b1f;}
+}
